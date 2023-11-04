@@ -67,10 +67,31 @@ heapMap:
     pushq %rbp
     movq %rsp, %rbp
     
+    movq $0, %rdi
+    call brk_func # int topo = brk(0);
+    movq topoInicialHeap, %rbx # %rbx contém o endereço do topo inicial
+    movq %rax, %rcx # %rax contém o endereço do topo atual
+    subq %rbx, %rcx # %rcx contém a diferença entre o topo atual e o inicial
+
+loop:
+    movq $0, %rsi   # int i = 0;
+    cmpq %rsi, %rcx
+    jge fim_loop     # while (i < %rcx)
+
     movq $CHAR_HASH, %rdi
     call putchar # putchar('#');
+    movq $CHAR_HASH, %rdi
+    call putchar # putchar('#');
+
+    # %rdx contém o tamanho do bloco atual
+
+    addq $2, %rsi
+    addq %rdx, %rsi
+    jmp loop
+
+fim_loop:
     movq $CHAR_NEWLINE, %rdi
     call putchar # putchar('\n');
 
     popq %rbp
-    ret
+    return_heapMap
