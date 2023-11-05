@@ -15,7 +15,7 @@ int liberaMem(void *bloco);
 // Aloca espaço na memória para um bloco de tamanho num_bytes.
 void *alocaMem(int num_bytes);
 
-// Imprime um mapa da região da heap a partir do endereço topo_heap.
-void heapMap(int topo_heap);
+// Imprime um mapa da região da heap a partir de topoInicialHeap.
+void heapMap(void);
 
 #endif // MYMALLOC_H_
