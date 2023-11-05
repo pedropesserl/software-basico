@@ -87,9 +87,9 @@ liberaMem:
     # checa os blocos à direita e à esquerda e realiza a fusão de blocos livres.
     # efetivamente:
     # se o bloco à direita existir e estiver livre:
-    #   soma ao tamanho do bloco do meio o tamanho do bloco à direita
+    #   soma ao tamanho do bloco do meio o tamanho do bloco à direita (+16 referente à seção de gerenciamento)
     # se o bloco à esquerda existir e estiver livre:
-    #   soma ao tamanho do bloco à esquerda o tamanho do bloco do meio
+    #   soma ao tamanho do bloco à esquerda o tamanho do bloco do meio (+16 referente à seção de gerenciamento)
 
     movq %rsi, %rcx
     movq -8(%rsi), %rdx # %rdx armazena o tamanho do bloco do meio
@@ -109,6 +109,8 @@ liberaMem:
 # bloco à direita existe e está livre:
     movq 8(%rcx), %rdx  # %rdx agora armazena o tamanho do bloco à direita
     addq %rdx, -8(%rsi) # soma ao tamanho do bloco do meio o tamanho do bloco à direita
+    addq $16, -8(%rsi)  # soma ao tamanho do bloco do meio 16 bytes referentes à seção
+                        # de gerenciamento do bloco à direita
 
 bloco_a_direita_analisado:
     pushq %rsi # preservando valor de %rsi na função caller
@@ -127,6 +129,8 @@ bloco_a_direita_analisado:
 # bloco à esquerda existe e está livre:
     movq -8(%rsi), %rdx # %rdx agora armazena o tamanho do bloco do meio
     addq %rdx, -8(%rax) # soma ao tamanho do bloco à esquerda o tamanho do bloco do meio
+    addq $16, -8(%rax)  # soma ao tamanho do bloco à esquerda 16 bytes referentes à seção
+                        # de gerenciamento do bloco do meio
 
 bloco_a_esquerda_analisado:
     popq %rbp
