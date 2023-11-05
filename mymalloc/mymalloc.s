@@ -21,7 +21,7 @@ brk_func:
     movq %rsp, %rbp
 
     movq $12, %rax
-    # %rdi já contém o valor do parâmetro da função brk
+    # supõe que %rdi já contém o valor do parâmetro da função brk
     syscall
     # %rax contém o valor de retorno
 
@@ -66,32 +66,73 @@ alocaMem:
 heapMap:
     pushq %rbp
     movq %rsp, %rbp
+    pushq %rbx # registradores preservados:
+    pushq %r12 # serão usados na função por terem seus conteúdos
+    pushq %r13 # inalterados antes e depois de chamadas de função
+    pushq %r14
+    pushq %r15
     
     movq $0, %rdi
-    call brk_func # int topo = brk(0);
-    movq topoInicialHeap, %rbx # %rbx contém o endereço do topo inicial
-    movq %rax, %rcx # %rax contém o endereço do topo atual
-    subq %rbx, %rcx # %rcx contém a diferença entre o topo atual e o inicial
+    call brk_func # %rax = brk(0);
+    movq %rax, %rbx            # %rbx contém o endereço do topo atual
+    movq topoInicialHeap, %r12 # %r12 contém o endereço do topo inicial
 
-loop:
-    movq $0, %rsi   # int i = 0;
-    cmpq %rsi, %rcx
-    jge fim_loop     # while (i < %rcx)
+    while_r12_lt_rbx:
+        cmpq %rbx, %r12
+        jge fim_while_rcx_lt_rax # while (%r12 < %rbx)
 
-    movq $CHAR_HASH, %rdi
-    call putchar # putchar('#');
-    movq $CHAR_HASH, %rdi
-    call putchar # putchar('#');
+        # imprime bytes da seção de informações gerenciais
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
 
-    # %rdx contém o tamanho do bloco atual
+        movq (%r12), %r13  # %r13 é 1 ou 0, se o bloco está respectivamente ocupado ou livre
+        movq 8(%r12), %r14 # %r14 contém o tamanho do bloco
+        cmpq %r13, $1
+        je bloco_ocupado  # if (%r13 == 1), bloco ocupado
 
-    addq $2, %rsi
-    addq %rdx, %rsi
-    jmp loop
+    # bloco livre:
+        movq $0, %r15 # long i = 0;
+        while_r15_lt_r14_bloco_livre:
+            cmpq %r14, %r15
+            jge imprimiu_bloco # while (%r15 < %r14)
+            
+            movq $CHAR_MINUS, %rdi
+            call putchar # putchar('-');
 
-fim_loop:
+            addq $1, %r15 # %r15++
+            jmp while_r15_lt_r14_bloco_livre
+
+        jmp imprimiu_bloco # bloco livre impresso
+
+    bloco_ocupado:
+        movq $0, %r15 # long i = 0
+        while_r15_lt_r14_bloco_ocupado:
+            cmpq %r14, %r15
+            jge imprimiu_bloco # while (%r15 < %r14)
+
+            movq $CHAR_PLUS, %rdi
+            call putchar # putchar('+');
+
+            addq $1, %r15 # %r15++
+            jmp while_r15_lt_r14_bloco_ocupado
+
+        # bloco ocupado impresso
+
+    imprimiu_bloco:
+        addq $16, %r12  # %r12 += tamanho da seção de informações gerenciais
+        addq %r14, %r12 # %r12 += tamanho do bloco
+        jmp while_r12_lt_rbx
+
+fim_while_rcx_lt_rax:
     movq $CHAR_NEWLINE, %rdi
     call putchar # putchar('\n');
 
+    popq %r15
+    popq %r14
+    popq %r13
+    popq %r12
+    popq %rbx # registradores preservados
     popq %rbp
-    return_heapMap
+    ret
