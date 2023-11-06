@@ -16,6 +16,7 @@ int liberaMem(void *bloco);
 void *alocaMem(int num_bytes);
 
 // Imprime um mapa da região da heap a partir de topoInicialHeap.
+// Deve ser chamada ANTES de finalizaAlocador().
 void heapMap(void);
 
 #endif // MYMALLOC_H_
