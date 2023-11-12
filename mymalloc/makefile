@@ -1,5 +1,5 @@
-# Usa as funções criadas no código-fonte em assembly (ASM)
-# em um programa C (PROGRAM)
+# Compila um programa (PROGRAM), escrito em C, que utiliza as
+# funções disponíveis em um arquivo assembly (ASM).
 
 PROGRAM = teste
 ASM = mymalloc
