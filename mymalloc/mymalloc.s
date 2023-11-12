@@ -201,7 +201,7 @@ alocar_espaco_no_topo_da_heap:
     popq %rsi
     popq %rax # restaurar registradores após a syscall
     movq $1, -16(%rax)  # marca o novo bloco como ocupado
-    movq %rsi, -8(%rax) # escreve o tamanhno do novo bloco na seção gerencial
+    movq %rsi, -8(%rax) # escreve o tamanho do novo bloco na seção gerencial
 
 return_alocaMem:
     popq %rbp
