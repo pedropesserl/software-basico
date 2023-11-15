@@ -1,5 +1,6 @@
 .section .data
     topoInicialHeap: .quad 0
+    fmt: .string "%s"
     secao_gerencial: .string "################"
 
 .equ CHAR_NEWLINE, 0x0a
@@ -229,41 +230,50 @@ heapMap:
         jge fim_while_r12_lt_rbx # while (%r12 < %rbx)
 
         # imprime bytes da seção de informações gerenciais
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
-        movq $CHAR_HASH, %rdi
-        call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
+        # movq $CHAR_HASH, %rdi
+        # call putchar # putchar('#');
         
         # movq $secao_gerencial, %rdi
         # call printf # printf("################");
+
+        # movq $fmt, %rdi
+        # movq $secao_gerencial, %rsi
+        # call printf # printf("%s", "################");
+
+        movq $1, %rdi # %rdi armazena STDOUT
+        movq $secao_gerencial, %rsi
+        movq $16, %rdx
+        call write
 
         movq (%r12), %r13  # %r13 é 1 ou 0 se o bloco está respectivamente ocupado ou livre
         movq 8(%r12), %r14 # %r14 contém o tamanho do bloco
@@ -278,6 +288,8 @@ heapMap:
             
             movq $CHAR_MINUS, %rdi
             call putchar # putchar('-');
+            movq $0, %rdi
+            call fflush # fflush(NULL);
 
             addq $1, %r15 # %r15++
             jmp while_r15_lt_r14_bloco_livre
@@ -292,6 +304,8 @@ heapMap:
 
             movq $CHAR_PLUS, %rdi
             call putchar # putchar('+');
+            movq $0, %rdi
+            call fflush # fflush(NULL);
 
             addq $1, %r15 # %r15++
             jmp while_r15_lt_r14_bloco_ocupado
