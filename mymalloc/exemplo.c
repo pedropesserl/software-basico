@@ -2,7 +2,6 @@
 #include "mymalloc.h"
 
 int main (long int argc, char** argv) {
-    putchar('\n');
   void *a, *b;
 
   iniciaAlocador();               // Impressão esperada
