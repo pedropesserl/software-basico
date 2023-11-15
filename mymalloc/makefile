@@ -1,7 +1,7 @@
 # Compila um programa (PROGRAM), escrito em C, que utiliza as
 # funções disponíveis em um arquivo assembly (ASM).
 
-PROGRAM = teste
+PROGRAM = exemplo
 ASM = mymalloc
 
 all: $(PROGRAM).c $(ASM).s

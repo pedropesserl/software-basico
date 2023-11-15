@@ -1,5 +1,6 @@
 .section .data
     topoInicialHeap: .quad 0
+    secao_gerencial: .string "################"
 
 .equ CHAR_NEWLINE, 0x0a
 .equ    CHAR_HASH, 0x23
@@ -232,6 +233,37 @@ heapMap:
         call putchar # putchar('#');
         movq $CHAR_HASH, %rdi
         call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        movq $CHAR_HASH, %rdi
+        call putchar # putchar('#');
+        
+        # movq $secao_gerencial, %rdi
+        # call printf # printf("################");
 
         movq (%r12), %r13  # %r13 é 1 ou 0 se o bloco está respectivamente ocupado ou livre
         movq 8(%r12), %r14 # %r14 contém o tamanho do bloco
