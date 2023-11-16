@@ -6,11 +6,6 @@
     char_minus: .string "-"
     secao_gerencial: .string "################"
 
-# .equ CHAR_NEWLINE, 0x0a
-# .equ    CHAR_HASH, 0x23
-# .equ    CHAR_PLUS, 0x2b
-# .equ   CHAR_MINUS, 0x2d
-
 .section .text
 .globl iniciaAlocador
 .globl finalizaAlocador
